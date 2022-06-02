@@ -7,18 +7,22 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Support.UI;
 
-namespace webaddressbooktests
+
+namespace webaddressbooktests.Tests
 {
+
     [TestFixture]
-    public class RemoeveGroupTests : TestBase
+
+    public class RemoveContactTests : TestBase
     {
-         [Test]
-        public void GroupremoveTest()
+
+        [Test]
+        public void ContactRemoveTest()
         {
-            app.Groups.Remove(1);
-            
-        }
-               
+            app.Contacts.Remove(1);
 
         }
+
+
+    }
 }

@@ -13,11 +13,23 @@ namespace webaddressbooktests
     public class HelperBase
     {
         protected IWebDriver driver;
-
-
-        public HelperBase(IWebDriver driver)
+        protected ApplicationManager manager;
+        
+        public HelperBase(ApplicationManager manager)
         {
-            this.driver = driver;
+            this.manager = manager;
+            driver = manager.Driver;
+        }
+
+     
+        public void Type(By localor, string text)
+        {
+            if (text != null)
+            {
+                driver.FindElement(localor).Clear();
+                driver.FindElement(localor).SendKeys(text);
+            }
+
         }
     }
 }

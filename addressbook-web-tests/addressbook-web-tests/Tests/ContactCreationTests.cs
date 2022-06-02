@@ -15,9 +15,6 @@ namespace webaddressbooktests
         [Test]
         public void ContactCreationTest()
         {
-            applicationManager.Navigator.OpenHomePage();
-            applicationManager.Auth.Login(new AccountData("admin", "secret"));
-            applicationManager.Contacts.InitContactCreation();
             ContactData contact = new ContactData();
             contact.Name = "Alexandr";
             contact.Lname = "Dubynin";
@@ -25,9 +22,24 @@ namespace webaddressbooktests
             contact.Comp = "Ascon";
             contact.Hom = "18";
             contact.Place = "Dolina";
-            applicationManager.Contacts.FillContactForm(contact);
-            applicationManager.Contacts.SubmitContactCreation();
-            applicationManager.Contacts.RetutToHomePage();
+
+            app.Contacts.Create(contact);
+ 
+        }
+
+        [Test]
+        public void EmptyContactCreationTest()
+        {
+            ContactData contact = new ContactData();
+            contact.Name = "";
+            contact.Lname = "";
+            contact.Nick = "";
+            contact.Comp = "";
+            contact.Hom = "";
+            contact.Place = "";
+
+            app.Contacts.Create(contact);
+
         }
     }
 }

@@ -7,56 +7,107 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Support.UI;
 
+
 namespace webaddressbooktests
 {
-    public class GroupHelper :HelperBase
+    public class GroupHelper : HelperBase
     {
 
-       public GroupHelper(IWebDriver driver) :base(driver)
+             public GroupHelper(ApplicationManager manager)
+            :base(manager)
         {
           
         }
-        
-        // для группы 
-        public void Fillgropform(GroupData group)
+
+        public GroupHelper Remove(int v)
         {
-            driver.FindElement(By.Name("group_name")).Click();
-            driver.FindElement(By.Name("group_name")).Clear();
-            driver.FindElement(By.Name("group_name")).SendKeys(group.Name);
-            driver.FindElement(By.Name("group_header")).Clear();
-            driver.FindElement(By.Name("group_header")).SendKeys(group.Header);
-            driver.FindElement(By.Name("group_footer")).Clear();
-            driver.FindElement(By.Name("group_footer")).SendKeys(group.Footer);
-            driver.FindElement(By.Name("group_footer")).Click();
-            driver.FindElement(By.Name("group_footer")).Click();
-            driver.FindElement(By.Name("group_footer")).Clear();
-            driver.FindElement(By.Name("group_footer")).SendKeys(group.Footer);
+            manager.Navigator.Gotogroppage();
+            SelectGroup(v);
+            Deletegroup();
+            ReturnToGropsPage();
+            return this;
         }
+
         // для группы 
-        public void SubmitGropCreation()
+        public GroupHelper Fillgropform(GroupData group)
+        {
+            Type(By.Name("group_name"), group.Name);
+            Type(By.Name("group_header"), group.Header);
+            Type(By.Name("group_footer"), group.Footer);
+  
+            return this;
+        }
+
+        public GroupHelper Create(GroupData group)
+        {
+            manager.Navigator.Gotogroppage();
+            Initgropscreation();
+            Fillgropform(group);
+            SubmitGropCreation();
+            ReturnToGropsPage();
+            return this;
+        }
+
+        public GroupHelper Modify(int v, GroupData newData)
+        {
+            manager.Navigator.Gotogroppage();
+            SelectGroup(v);
+            InitGroupModification();
+            Fillgropform(newData);
+            SubmitgroupModification();
+            ReturnToGropsPage();
+            return this;
+
+        }
+
+        private GroupHelper SubmitgroupModification()
+        {
+
+            driver.FindElement(By.Name("update")).Click();
+            return this;
+
+        }
+
+        public GroupHelper InitGroupModification()
+        {
+            driver.FindElement(By.Name("edit")).Click();
+            return this;
+        }
+
+        // для группы 
+        public GroupHelper SubmitGropCreation()
         {
             driver.FindElement(By.Name("submit")).Click();
+            return this;
+
         }
         // для группы 
-        public void ReturnToGropsPage()
+        public GroupHelper ReturnToGropsPage()
         {
             driver.FindElement(By.LinkText("groups")).Click();
+            return this;
+
         }
         // для группы 
-        public void Initgropscreation()
+        public GroupHelper Initgropscreation()
         {
             driver.FindElement(By.Name("new")).Click();
+            return this;
+
         }
         // для удаления группы 
-        public void SelectGruop(int index)
+        public GroupHelper SelectGroup(int index)
         {
             driver.FindElement(By.XPath("//input[@name='selected[]'][" + index + "]")).Click();
+            return this;
+
         }
         // для удаления группы 
-        public void Deletegroup()
+        public GroupHelper Deletegroup()
         {
-            //driver.FindElement(By.Name("delete")).Click(); - альтернативный вариант (как в примере)
-            driver.FindElement(By.XPath("//input[5]")).Click();
+            driver.FindElement(By.Name("delete")).Click(); 
+            return this;
+
         }
 
     }

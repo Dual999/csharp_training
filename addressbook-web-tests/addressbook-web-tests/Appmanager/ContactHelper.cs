@@ -11,48 +11,94 @@ namespace webaddressbooktests
 {
     public class ContactHelper : HelperBase
     {
-
-        public ContactHelper(IWebDriver driver) : base(driver)
+              public ContactHelper(ApplicationManager manager)
+            : base(manager)
         {
-
+            
         }
-        public void InitContactCreation()
+
+        public ContactHelper Remove(int v)
+        {
+            SelectContacts(v);
+            Deletecontact();
+            SubmitContactDelete();
+            return this;
+        }
+
+        private void SubmitContactDelete()
+        {
+            //Assert.IsTrue(Regex.IsMatch(CloseAlertAndGetItsText(), "^Delete 1 addresses[\\s\\S]$"));
+            driver.SwitchTo().Alert().Accept();
+        }
+
+        private ContactHelper Deletecontact()
+        {
+            driver.FindElement(By.XPath("//input[@value='Delete']")).Click();
+            return this;
+        }
+
+        public ContactHelper SelectContacts(int index)
+        {
+            driver.FindElement(By.XPath("//input[@name='selected[]'][" + index + "]")).Click();
+            return this;
+        }
+        // для удаления 
+        public ContactHelper InitContactCreation()
         {
             driver.FindElement(By.LinkText("add new")).Click();
+            return this;
         }
-
-        // для контакта
-        public void FillContactForm(ContactData contact)
+        public ContactHelper Modify(int v, ContactData newData)
         {
-            driver.FindElement(By.Name("firstname")).Click();
-            driver.FindElement(By.Name("firstname")).Clear();
-            driver.FindElement(By.Name("firstname")).SendKeys(contact.Name);
-            driver.FindElement(By.Name("lastname")).Click();
-            driver.FindElement(By.Name("lastname")).Clear();
-            driver.FindElement(By.Name("lastname")).SendKeys(contact.Lname);
-            driver.FindElement(By.Name("nickname")).Click();
-            driver.FindElement(By.Name("nickname")).Clear();
-            driver.FindElement(By.Name("nickname")).SendKeys(contact.Nick);
-            driver.FindElement(By.Name("company")).Click();
-            driver.FindElement(By.Name("company")).Clear();
-            driver.FindElement(By.Name("company")).SendKeys(contact.Comp);
-            driver.FindElement(By.Name("home")).Click();
-            driver.FindElement(By.Name("home")).Clear();
-            driver.FindElement(By.Name("home")).SendKeys(contact.Hom);
-            driver.FindElement(By.Name("work")).Click();
-            driver.FindElement(By.Name("work")).Clear();
-            driver.FindElement(By.Name("work")).SendKeys(contact.Place);
+            InitContactModification();
+            FillContactForm(newData);
+            SubmitContactModification();
+            ReturnToHomePage();
+            return this;
+        }
+        public ContactHelper InitContactModification()
+        {
+            driver.FindElement(By.CssSelector("img[alt=Edit]")).Click();
+
+              return this;
+        }
+        public ContactHelper SubmitContactModification()
+        {
+            driver.FindElement(By.Name("update")).Click();
+
+            return this;
+        }
+        public ContactHelper Create(ContactData contact)
+        {
+            InitContactCreation();
+            FillContactForm(contact);
+            SubmitContactCreation();
+            ReturnToHomePage();
+            return this;
+        }
+        // для контакта
+        public ContactHelper FillContactForm(ContactData contact)
+        {
+            Type(By.Name("firstname"), contact.Name);
+            Type(By.Name("lastname"), contact.Lname);
+            Type(By.Name("nickname"), contact.Nick);
+            Type(By.Name("company"), contact.Comp);
+            Type(By.Name("home"), contact.Hom);
+            Type(By.Name("work"), contact.Place);
+             return this;
         }
 
         // для контакта
-        public void SubmitContactCreation()
+        public ContactHelper SubmitContactCreation()
         {
             driver.FindElement(By.XPath("//div[@id='content']/form/input[21]")).Click();
+            return this;
         }
         // для контакта
-        public void RetutToHomePage()
+        public ContactHelper ReturnToHomePage()
         {
             driver.FindElement(By.LinkText("home")).Click();
+            return this;
         }
     }
 }

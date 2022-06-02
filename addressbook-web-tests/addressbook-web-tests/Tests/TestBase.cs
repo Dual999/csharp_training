@@ -10,26 +10,27 @@ using OpenQA.Selenium.Support.UI;
 
 namespace webaddressbooktests
 {
-   public class TestBase 
+    public class TestBase
     {
-        protected ApplicationManager applicationManager;
+
+        protected ApplicationManager app;
         protected IWebDriver driver;
         protected string baseURL;
 
         [SetUp]
-
         public void SetupTest()
         {
-            applicationManager = new ApplicationManager();
-            
-           
-          }
+            app = new ApplicationManager();
+
+            app.Navigator.OpenHomePage();
+            app.Auth.Login(new AccountData("admin", "secret"));
+        }
 
         [TearDown]
-        public void TeardownTest()
+
+        public void Teardowntest()
         {
-            applicationManager.Stop();
+            app.Stop();
         }
-           
     }
 }
