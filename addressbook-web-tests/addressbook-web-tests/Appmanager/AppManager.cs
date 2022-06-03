@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Edge;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
-
 
 namespace webaddressbooktests
 {
@@ -21,34 +21,44 @@ namespace webaddressbooktests
         protected GroupHelper groupHelper;
         protected ContactHelper contactHelper;
 
+        private static ThreadLocal<ApplicationManager> app = new ThreadLocal<ApplicationManager>();
 
-        public ApplicationManager() 
+        private ApplicationManager()
         {
-            driver = new EdgeDriver();
+            driver = new ChromeDriver();
             baseURL = ("http://10.63.5.184/addressbook");
+
             loginHelper = new LoginHelper(this);
             navigationHelper = new NavigationHelper(this, baseURL);
             groupHelper = new GroupHelper(this);
             contactHelper = new ContactHelper(this);
 
         }
-        public IWebDriver Driver {
-            get
-            {
-                return driver;
-            }
-             }
-        public void Stop()
+
+        ~ApplicationManager()
         {
             try
             {
                 driver.Quit();
             }
-            catch (Exception)
+            catch (Exception )
             {
                 // Ignore errors if unable to close the browser
             }
         }
+        public static ApplicationManager Getinstance()
+
+        {
+            if (!app.IsValueCreated)
+            {
+                app.Value = new ApplicationManager();
+            }
+
+            return app.Value;
+        }
+
+
+        public IWebDriver Driver => driver;
 
         public LoginHelper Auth
         {
@@ -71,5 +81,6 @@ namespace webaddressbooktests
             { return contactHelper; }
         }
 
+     
     }
 }

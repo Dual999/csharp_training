@@ -7,12 +7,12 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Support.UI;
 
-namespace webaddressbooktests
+namespace webaddressbooktests.Tests
 {
     [TestFixture]
     public class GroupCreationTests : TestBase
     {
-         [Test]
+        [Test]
         public void GroupCreationTest()
         {     
             GroupData group = new GroupData("aaa");

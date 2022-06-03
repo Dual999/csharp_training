@@ -4,33 +4,26 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using NUnit.Framework;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Edge;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 
 
-namespace webaddressbooktests
+namespace webaddressbooktests.Tests
 {
     public class TestBase
     {
 
         protected ApplicationManager app;
-        protected IWebDriver driver;
-        protected string baseURL;
+
 
         [SetUp]
         public void SetupTest()
         {
-            app = new ApplicationManager();
+            app = ApplicationManager.Getinstance();
 
-            app.Navigator.OpenHomePage();
-            app.Auth.Login(new AccountData("admin", "secret"));
+       
         }
 
-        [TearDown]
-
-        public void Teardowntest()
-        {
-            app.Stop();
-        }
-    }
-}
+    
+     }
+} 

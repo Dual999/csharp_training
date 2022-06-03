@@ -7,7 +7,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Support.UI;
 
-namespace webaddressbooktests
+namespace webaddressbooktests.Tests
 {
     [TestFixture]
     public class ContactCreationTests : TestBase
@@ -24,7 +24,6 @@ namespace webaddressbooktests
             contact.Place = "Dolina";
 
             app.Contacts.Create(contact);
- 
         }
 
         [Test]
