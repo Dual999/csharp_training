@@ -19,10 +19,16 @@ namespace webaddressbooktests
         [SetUp]
         public void InitApplicationManager()
         {
-           ApplicationManager app = ApplicationManager.Getinstance();
+            app = new ApplicationManager();
+            //   ApplicationManager app = ApplicationManager.Getinstance();
             app.Navigator.OpenHomePage();
             app.Auth.Login(new AccountData("admin", "secret"));
         }
 
-    }
+        [TearDown]
+        public void StopApplicationManager()
+        {
+              app.Stop();
+        }
+}     
 }
