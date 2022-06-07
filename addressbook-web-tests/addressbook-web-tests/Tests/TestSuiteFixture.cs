@@ -14,13 +14,13 @@ namespace webaddressbooktests
     [SetUpFixture]
     public class TestSuiteFixture
     {
-        public static ApplicationManager app;
+        
 
         [SetUp]
         public void InitApplicationManager()
         {
-            app = new ApplicationManager();
-            //   ApplicationManager app = ApplicationManager.Getinstance();
+            // app = new ApplicationManager();
+            ApplicationManager app = ApplicationManager.GetInstance();
             app.Navigator.OpenHomePage();
             app.Auth.Login(new AccountData("admin", "secret"));
         }
@@ -28,7 +28,8 @@ namespace webaddressbooktests
         [TearDown]
         public void StopApplicationManager()
         {
-              app.Stop();
-        }
+            ApplicationManager.GetInstance().Stop();  
+            //app.Stop();
+         }
 }     
 }

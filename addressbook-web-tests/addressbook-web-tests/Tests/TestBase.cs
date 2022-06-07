@@ -20,9 +20,10 @@ namespace webaddressbooktests
         [SetUp]
         public void SetupTest()
         {
-            app = TestSuiteFixture.app;
-          //  app = new ApplicationManager();
-             // app.Navigator.OpenHomePage();
+           app = ApplicationManager.GetInstance();
+            //app = TestSuiteFixture.app;
+            //  app = new ApplicationManager();
+            // app.Navigator.OpenHomePage();
             //app.Auth.Login(new AccountData("admin", "secret"));
         }
 

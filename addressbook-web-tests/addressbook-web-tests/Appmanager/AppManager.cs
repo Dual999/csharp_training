@@ -21,8 +21,9 @@ namespace webaddressbooktests
         protected GroupHelper groupHelper;
         protected ContactHelper contactHelper;
 
+        private static ApplicationManager instance;
 
-        public ApplicationManager()
+        private ApplicationManager()
         {
             driver = new ChromeDriver();
             baseURL = ("http://10.63.5.184/addressbook");
@@ -31,6 +32,17 @@ namespace webaddressbooktests
             groupHelper = new GroupHelper(this);
             contactHelper = new ContactHelper(this);
 
+        }
+
+        public static ApplicationManager GetInstance()
+        {
+            if (instance == null)
+            {
+                instance = new ApplicationManager();
+            }
+            return instance;
+
+        
         }
         public IWebDriver Driver
         {
