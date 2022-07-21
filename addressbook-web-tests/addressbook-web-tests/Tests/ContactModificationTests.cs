@@ -10,13 +10,13 @@ using OpenQA.Selenium.Support.UI;
 namespace webaddressbooktests.Tests
 {
     [TestFixture]
-    class ContactModificationTests :TestBase
+    class ContactModificationTests : AuthTestBase
     {
         [Test]
         public void ContactModificationtest()
         {
             ContactData newData = new ContactData();
-            newData.Name = "111";
+            newData.Fname = "111";
             newData.Lname = "222";
             newData.Nick = null;
             newData.Comp = "444";

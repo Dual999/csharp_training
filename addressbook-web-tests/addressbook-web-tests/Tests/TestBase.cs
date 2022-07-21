@@ -3,10 +3,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.UI;
-
 
 namespace webaddressbooktests
 {
@@ -14,24 +10,17 @@ namespace webaddressbooktests
     {
 
         protected ApplicationManager app;
-        protected IWebDriver driver;
-        protected string baseURL;
+        //protected IWebDriver driver;
+        //protected string baseURL;
 
         [SetUp]
-        public void SetupTest()
+        public void SetupApplecationManager()
         {
-           app = ApplicationManager.GetInstance();
-            //app = TestSuiteFixture.app;
-            //  app = new ApplicationManager();
-            // app.Navigator.OpenHomePage();
-            //app.Auth.Login(new AccountData("admin", "secret"));
+            app = ApplicationManager.GetInstance();
+
+
         }
 
-       // [TearDown]
 
-        //public void Teardowntest()
-        //{
-        //    app.Stop();
-        //}
     }
 }

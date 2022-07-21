@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -21,12 +22,12 @@ namespace webaddressbooktests
         protected GroupHelper groupHelper;
         protected ContactHelper contactHelper;
 
-        private static ApplicationManager instance;
+        private static ThreadLocal<ApplicationManager> app = new ThreadLocal<ApplicationManager>();
 
         private ApplicationManager()
         {
             driver = new ChromeDriver();
-            baseURL = ("http://10.63.5.184/addressbook");
+            baseURL = "http://10.63.5.184";
             loginHelper = new LoginHelper(this);
             navigationHelper = new NavigationHelper(this, baseURL);
             groupHelper = new GroupHelper(this);
@@ -34,13 +35,31 @@ namespace webaddressbooktests
 
         }
 
+        ~ApplicationManager()
+        {
+
+            try
+            {
+                driver.Dispose();
+                driver.Quit();
+            }
+            catch (Exception)
+            {
+                //Ignore errors if unable to close the browser
+            }
+        }
+
+
         public static ApplicationManager GetInstance()
         {
-            if (instance == null)
+            if (! app.IsValueCreated )
             {
-                instance = new ApplicationManager();
+                ApplicationManager newInstance = new ApplicationManager();
+                newInstance.Navigator.OpenHomePage();
+                app.Value = newInstance;
+
             }
-            return instance;
+            return app.Value;
 
         
         }
@@ -49,17 +68,6 @@ namespace webaddressbooktests
             get
             {
                 return driver;
-            }
-        }
-        public void Stop()
-        {
-            try
-            {
-                driver.Quit();
-            }
-            catch (Exception)
-            {
-                // Ignore errors if unable to close the browser
             }
         }
 

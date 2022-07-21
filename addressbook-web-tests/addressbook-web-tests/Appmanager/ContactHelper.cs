@@ -3,6 +3,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using NUnit.Framework;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Linq;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Support.UI;
@@ -19,6 +22,7 @@ namespace webaddressbooktests
 
         public ContactHelper Remove(int v)
         {
+            manager.Navigator.OpenHomePage();
             SelectContacts(v);
             Deletecontact();
             SubmitContactDelete();
@@ -31,6 +35,26 @@ namespace webaddressbooktests
             driver.SwitchTo().Alert().Accept();
         }
 
+        public List<ContactData> GetContactsList()
+        {
+            List<ContactData> contacts = new List<ContactData>();
+            manager.Navigator.OpenHomePage();
+            ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("tr"));
+            foreach (IWebElement element in elements)
+            {
+                {
+                    if (element.GetAttribute("name") == "entry")
+                    {
+                        List<IWebElement> tds = element.FindElements(By.CssSelector("td")).ToList();
+                        contacts.Add(new ContactData(tds[2].Text, tds[1].Text));
+                    }
+                }
+                //contacts.Add(new ContactData(element.Text));
+
+            }
+            return contacts;
+        }
+
         private ContactHelper Deletecontact()
         {
             driver.FindElement(By.XPath("//input[@value='Delete']")).Click();
@@ -39,7 +63,7 @@ namespace webaddressbooktests
 
         public ContactHelper SelectContacts(int index)
         {
-            driver.FindElement(By.XPath("//input[@name='selected[]'][" + index + "]")).Click();
+            driver.FindElement(By.XPath("//input[@name='selected[]'][" + (index + 1) + "]")).Click();
             return this;
         }
         // для удаления 
@@ -79,7 +103,7 @@ namespace webaddressbooktests
         // для контакта
         public ContactHelper FillContactForm(ContactData contact)
         {
-            Type(By.Name("firstname"), contact.Name);
+            Type(By.Name("firstname"), contact.Fname);
             Type(By.Name("lastname"), contact.Lname);
             Type(By.Name("nickname"), contact.Nick);
             Type(By.Name("company"), contact.Comp);
