@@ -29,8 +29,14 @@ namespace webaddressbooktests.Tests
 
             app.Contacts.Create(contact);
 
-            List<ContactData> NewContact = app.Contacts.GetContactsList();
-            Assert.AreEqual(oldContacts.Count + 1, NewContact.Count);
+            Assert.AreEqual(oldContacts.Count + 1, app.Contacts.GetContactsCount());
+
+            List<ContactData> newcontact = app.Contacts.GetContactsList();
+            oldContacts.Add(contact);
+            oldContacts.Sort();
+            oldContacts.Sort();
+
+            Assert.AreEqual(oldContacts, newcontact);
         }
 
         [Test]
@@ -48,9 +54,13 @@ namespace webaddressbooktests.Tests
 
             app.Contacts.Create(contact);
 
+            Assert.AreEqual(oldContacts.Count + 1, app.Contacts.GetContactsCount());
 
-            List<ContactData> NewContact = app.Contacts.GetContactsList();
-            Assert.AreEqual(oldContacts.Count + 1, NewContact.Count);
+            List<ContactData> newcontact = app.Contacts.GetContactsList();
+            oldContacts.Add(contact);
+            oldContacts.Sort();
+            oldContacts.Sort();
+            Assert.AreEqual(oldContacts, newcontact);
 
         }
     }

@@ -8,12 +8,6 @@ namespace webaddressbooktests
 {
     public class ContactData : IEquatable<ContactData>, IComparable<ContactData>
     {
-        private string fname = "";
-        private string lname = "";
-        private string nick = "";
-        private string comp = "";
-        private string home = "";
-        private string place = "";
 
         public ContactData(string fname , string lname)
         {
@@ -49,91 +43,38 @@ namespace webaddressbooktests
                 return 1;
             }
 
-            return Fname.CompareTo(other.Fname);
+            if (Object.ReferenceEquals(Lname, other.Lname))
+            {
+                return Fname.CompareTo(other.Fname);
+            }
+            return Lname.CompareTo(other.Lname);
+
+            // return Fname.CompareTo(other.Fname);
+            
         }
         public override int GetHashCode()
         {
 
-            return Fname.GetHashCode() +
-                Lname.GetHashCode();
+            return Lname.GetHashCode() +
+                Fname.GetHashCode();
         }
 
         public override string ToString()
         {
-            return Fname + " " + Lname;
+            return Lname + " " + Fname;
         }
 
 
-        public string Fname
-        {
-            get
-            {
-                return fname;
-            }
-            set
-            {
-                fname = value;
-            }
-        }
+        public string id { get; set; }
+        public string Fname { get; set; }
 
-        public string Lname
-        {
-            get 
-            {
-                return lname;
-            }
-            set
-            {
-                lname = value;
-            }
-        }
+        public string Lname { get; set; }
 
-        public string Nick
-        {
-            get
-            {
-                return nick;
-            }
-            set
-            {
-                nick = value;
-            }
-        }
+        public string Nick { get; set; }
 
-        public string Comp
-        {
-            get
-            {
-                return comp;
-            }
-            set
-            {
-                comp = value;
-            }
-        }
+        public string Comp { get; set; }
 
-        public string Hom
-        {
-            get
-            {
-                return home;
-            }
-            set
-            {
-                home = value;
-            }
-        }
-
-        public string Place
-        {
-            get
-            {
-                return place;
-            }
-            set
-            {
-                place = value;
-            }
-        }
+        public string Hom { get; set; }
+        public string Place { get; set; }
     }
 }

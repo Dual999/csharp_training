@@ -29,35 +29,44 @@ namespace webaddressbooktests
             return this;
         }
 
-        private void SubmitContactDelete()
+        public ContactHelper SubmitContactDelete()
         {
-            //Assert.IsTrue(Regex.IsMatch(CloseAlertAndGetItsText(), "^Delete 1 addresses[\\s\\S]$"));
             driver.SwitchTo().Alert().Accept();
+            return this;
         }
+
+        public int GetContactsCount()
+        {
+            return driver.FindElements(By.Name("selected[]")).Count;
+        }
+
+        private List<ContactData> contactCache = null;
 
         public List<ContactData> GetContactsList()
         {
-            List<ContactData> contacts = new List<ContactData>();
-            manager.Navigator.OpenHomePage();
-            ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("tr"));
-            foreach (IWebElement element in elements)
-            {
-                {
-                    if (element.GetAttribute("name") == "entry")
-                    {
-                        List<IWebElement> tds = element.FindElements(By.CssSelector("td")).ToList();
-                        contacts.Add(new ContactData(tds[2].Text, tds[1].Text));
-                    }
-                }
-                //contacts.Add(new ContactData(element.Text));
 
+            if (contactCache == null)
+            { 
+                contactCache = new List<ContactData>();
+                manager.Navigator.OpenHomePage();
+                ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("tr"));
+                foreach (IWebElement element in elements)
+                {                    
+                        if (element.GetAttribute("name") == "entry")
+                        {
+                            List<IWebElement> tds = element.FindElements(By.CssSelector("td")).ToList();
+                            contactCache.Add(new ContactData(tds[2].Text, tds[1].Text));
+                        }
+                }
             }
-            return contacts;
+        
+            return new List<ContactData>(contactCache);
         }
 
-        private ContactHelper Deletecontact()
+        public ContactHelper Deletecontact()
         {
             driver.FindElement(By.XPath("//input[@value='Delete']")).Click();
+            contactCache = null;
             return this;
         }
 
@@ -89,7 +98,7 @@ namespace webaddressbooktests
         public ContactHelper SubmitContactModification()
         {
             driver.FindElement(By.Name("update")).Click();
-
+            contactCache = null;
             return this;
         }
         public ContactHelper Create(ContactData contact)
@@ -116,6 +125,7 @@ namespace webaddressbooktests
         public ContactHelper SubmitContactCreation()
         {
             driver.FindElement(By.XPath("//div[@id='content']/form/input[21]")).Click();
+            contactCache = null;
             return this;
         }
         // для контакта

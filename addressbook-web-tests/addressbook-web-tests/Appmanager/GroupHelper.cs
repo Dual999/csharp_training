@@ -14,10 +14,10 @@ namespace webaddressbooktests
     public class GroupHelper : HelperBase
     {
 
-             public GroupHelper(ApplicationManager manager)
-            :base(manager)
+        public GroupHelper(ApplicationManager manager)
+       : base(manager)
         {
-          
+
         }
 
         public GroupHelper Remove(int v)
@@ -35,21 +35,33 @@ namespace webaddressbooktests
             Type(By.Name("group_name"), group.Name);
             Type(By.Name("group_header"), group.Header);
             Type(By.Name("group_footer"), group.Footer);
-  
+
             return this;
         }
 
+        private List<GroupData> groupCache = null;
+
         public List<GroupData> GetGroupList()
         {
-
-            List<GroupData> groups = new List<GroupData>();
-            manager.Navigator.Gotogroppage();
-            ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("span.group"));
-            foreach (IWebElement element in elements)
+            if (groupCache == null)
             {
-                groups.Add(new GroupData(element.Text));
+                groupCache = new List<GroupData>();
+                manager.Navigator.Gotogroppage();
+                ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("span.group"));
+                foreach (IWebElement element in elements)
+                {
+                    groupCache.Add(new GroupData(element.Text) { id = element.FindElement(By.TagName("input")).GetAttribute("value")
+                    });
+                }
             }
-            return groups;
+
+            return new List<GroupData>(groupCache);
+        }
+
+
+        public int GetGroupCount()
+        {
+          return driver.FindElements(By.CssSelector("span.group")).Count;
         }
 
         public GroupHelper Create(GroupData group)
@@ -78,6 +90,7 @@ namespace webaddressbooktests
         {
 
             driver.FindElement(By.Name("update")).Click();
+            groupCache = null;
             return this;
 
         }
@@ -92,6 +105,7 @@ namespace webaddressbooktests
         public GroupHelper SubmitGropCreation()
         {
             driver.FindElement(By.Name("submit")).Click();
+            groupCache = null;
             return this;
 
         }
@@ -119,7 +133,8 @@ namespace webaddressbooktests
         // для удаления группы 
         public GroupHelper Deletegroup()
         {
-            driver.FindElement(By.Name("delete")).Click(); 
+            driver.FindElement(By.Name("delete")).Click();
+            groupCache = null;
             return this;
 
         }

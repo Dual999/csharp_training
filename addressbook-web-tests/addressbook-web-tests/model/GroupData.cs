@@ -9,13 +9,10 @@ namespace webaddressbooktests
     public class GroupData : IEquatable<GroupData>, IComparable<GroupData>
     {
 
-        private string name;
-        private string header = "";
-        private string footer = "";
 
         public GroupData(string name)
         {
-            this.name = name;
+            Name = name;
 
         }
 
@@ -37,7 +34,6 @@ namespace webaddressbooktests
         public override int GetHashCode()
         {
             return Name.GetHashCode();
-        
         }
 
         public override string ToString()
@@ -54,39 +50,13 @@ namespace webaddressbooktests
 
             return Name.CompareTo(other.Name);
         }
-        public string Name
-        {
-            get
-            { return name;
-                    }
-            set
-            {
-                name = value;
-            }
-        }
 
-        public string Footer
-        {
-            get
-            {
-                return footer;
-            }
-            set 
-            {
-                footer = value;
-            }   
-                }
-      
-        public string Header
+        public string id { get; set; }
+        public string Name { get; set; }
 
-        {
-            get {
-                return header;
-            }
-            set {
-                header = value;
-            }
-        }
+        public string Footer { get; set; }
+
+        public string Header { get; set; }
 
 
     }
