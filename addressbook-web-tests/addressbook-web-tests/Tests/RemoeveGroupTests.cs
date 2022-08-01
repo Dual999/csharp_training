@@ -24,14 +24,14 @@ namespace webaddressbooktests.Tests
 
             List<GroupData> NewGroups = app.Groups.GetGroupList();
 
-           // GroupData oldData = oldGroups[0];
+            GroupData oldData = oldGroups[0];
             oldGroups.RemoveAt(0);
             Assert.AreEqual(oldGroups, NewGroups);
 
             foreach (GroupData group in NewGroups)
             {
 
-                Assert.AreNotEqual(group.id, oldGroups[0]);
+                Assert.AreNotEqual(group.id, oldData.id);
 
             }
                         

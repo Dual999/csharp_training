@@ -21,7 +21,7 @@ namespace webaddressbooktests.Tests
             newData.Lname = "222";
             newData.Nick = null;
             newData.Comp = "444";
-            newData.Hom = null;
+            newData.HomePhone = null;
             newData.Place = null;
 
 

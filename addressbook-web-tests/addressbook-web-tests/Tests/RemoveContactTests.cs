@@ -7,7 +7,8 @@ using System.Collections.Generic;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Support.UI;
-
+using System.Threading.Tasks;
+using System.Linq;
 
 namespace webaddressbooktests.Tests
 {
@@ -24,20 +25,24 @@ namespace webaddressbooktests.Tests
             List<ContactData> oldContacts = app.Contacts.GetContactsList();
 
             app.Contacts.Remove(0);
-
+            Task.Delay(5000).Wait();
             Assert.AreEqual(oldContacts.Count - 1, app.Contacts.GetContactsCount());
 
             List<ContactData> NewContact = app.Contacts.GetContactsList();
 
-            oldContacts.RemoveAt(0);
+            ContactData oldtData = oldContacts[0];
+            
+             oldContacts.RemoveAt(0);
+
             Assert.AreEqual(oldContacts, NewContact);
 
             foreach (ContactData contact in NewContact)
             {
 
-                Assert.AreNotEqual(contact.id, oldContacts[0]);
+                Assert.AreNotEqual(contact.id, oldtData.id);
 
             }
+
 
         }
 

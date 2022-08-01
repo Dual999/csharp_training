@@ -13,13 +13,30 @@ namespace webaddressbooktests.Tests
     [TestFixture]
     public class GroupCreationTests : AuthTestBase
     {
-        [Test]
-        public void GroupCreationTest()
-        {     
-            GroupData group = new GroupData("aaa");
-            group.Header = "ddd";
-            group.Footer = "fff";
+        public static IEnumerable<GroupData> RandomGroupDataProvider() 
+        {
 
+        List<GroupData> groups = new List<GroupData>();
+            for (int i = 0; i < 5; i++) 
+            
+            {
+            groups.Add(new GroupData(GenerateRandomString(30)) {
+                    Header = GenerateRandomString(100),
+                    Footer = GenerateRandomString(100)
+            });
+            }
+            return groups;
+        }
+
+
+
+        [Test, TestCaseSource("RandomGroupDataProvider")]
+        public void GroupCreationTest(GroupData group)
+        {
+            //GrouptData group = new groupData("aaaaa");
+            //group.Header = "fffffff";
+            //group.Footer = "zzzzzz";
+ 
             List<GroupData> oldGroups = app.Groups.GetGroupList();
 
             app.Groups.Create(group);
@@ -32,25 +49,7 @@ namespace webaddressbooktests.Tests
           Assert.AreEqual(oldGroups, newGroups);
         }
 
-        [Test]
-        public void EmptyGroupCreationTest()
-        {
-            GroupData group = new GroupData("");
-            group.Header = "";
-            group.Footer = "";
-
-            List<GroupData> oldGroups = app.Groups.GetGroupList();
-
-            app.Groups.Create(group);
-
-            Assert.AreEqual(oldGroups.Count + 1, app.Groups.GetGroupCount());
-            List<GroupData> newGroups = app.Groups.GetGroupList();
-            oldGroups.Add(group);
-            oldGroups.Sort();
-            newGroups.Sort();
-            Assert.AreEqual(oldGroups, newGroups);
-
-
-        }
+    
+        
     }
 }

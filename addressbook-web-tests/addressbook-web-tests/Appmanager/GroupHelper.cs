@@ -41,6 +41,24 @@ namespace webaddressbooktests
 
         private List<GroupData> groupCache = null;
 
+        //public List<GroupData> GetGroupList()
+        //{
+        //    if (groupCache == null)
+        //    {
+        //        groupCache = new List<GroupData>();
+        //        manager.Navigator.Gotogroppage();
+        //        ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("span.group"));
+        //        foreach (IWebElement element in elements)
+        //        {
+        //            groupCache.Add(new GroupData(element.Text) { id = element.FindElement(By.TagName("input")).GetAttribute("value")
+        //            });
+        //        }
+        //    }
+
+        //    return new List<GroupData>(groupCache);
+        //}
+
+        // сплит
         public List<GroupData> GetGroupList()
         {
             if (groupCache == null)
@@ -50,15 +68,31 @@ namespace webaddressbooktests
                 ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("span.group"));
                 foreach (IWebElement element in elements)
                 {
-                    groupCache.Add(new GroupData(element.Text) { id = element.FindElement(By.TagName("input")).GetAttribute("value")
+                    groupCache.Add(new GroupData(null)
+                    {
+                        id = element.FindElement(By.TagName("input")).GetAttribute("value")
                     });
                 }
+                string allGroupNames = driver.FindElement(By.CssSelector("div#content form")).Text;
+        string[] parts = allGroupNames.Split('\n');
+        int shift = groupCache.Count - parts.Length;
+        for (int i = 0; i<groupCache.Count; i++)
+            {
+            if (i<shift)
+            {
+                groupCache[i].Name = "";
+             }
+    else
+            {
+
+         groupCache[i].Name = parts[i - shift].Trim();
+                }
+            
+            }
             }
 
             return new List<GroupData>(groupCache);
         }
-
-
         public int GetGroupCount()
         {
           return driver.FindElements(By.CssSelector("span.group")).Count;

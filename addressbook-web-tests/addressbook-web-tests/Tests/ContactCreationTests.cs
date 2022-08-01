@@ -13,16 +13,36 @@ namespace webaddressbooktests.Tests
     [TestFixture]
     public class ContactCreationTests : AuthTestBase
     {
-        [Test]
-        public void ContactCreationTest()
+        public static IEnumerable<ContactData> RandomContactDataProvider()
         {
-            ContactData contact = new ContactData();
-            contact.Fname = "Alexandr";
-            contact.Lname = "Dubynin";
-            contact.Nick = "Aldu";
-            contact.Comp = "Ascon";
-            contact.Hom = "18";
-            contact.Place = "Dolina";
+
+            List<ContactData> contancts = new List<ContactData>();
+            for (int i = 0; i < 5; i++)
+
+            {
+                contancts.Add(new ContactData(GenerateRandomString(30))
+                {
+                    Fname = GenerateRandomString(100),
+                    Lname = GenerateRandomString(100),
+                    Address = GenerateRandomString(100),
+                    HomePhone = GenerateRandomString(100),
+                    MobilePhone = GenerateRandomString(100),
+                    WorkPhone = GenerateRandomString(100)
+                });
+            }
+            return contancts;
+        }
+        [Test, TestCaseSource("RandomContactDataProvider")]
+        public void ContactCreationTest(ContactData contact)
+        {
+            //ContactData contact = new ContactData();
+            //contact.Fname = "Alexandr";
+            //contact.Lname = "Dubynin";
+            //contact.Nick = "Aldu";
+            //contact.Comp = "Ascon";
+            //contact.HomePhone = "111111";
+            //contact.MobilePhone = "222222";
+            //contact.WorkPhone = "333333333";
 
             List<ContactData> oldContacts = app.Contacts.GetContactsList();
 
@@ -39,29 +59,29 @@ namespace webaddressbooktests.Tests
             Assert.AreEqual(oldContacts, newcontact);
         }
 
-        [Test]
-        public void EmptyContactCreationTest()
-        {
-            ContactData contact = new ContactData();
-            contact.Fname = "";
-            contact.Lname = "";
-            contact.Nick = "";
-            contact.Comp = "";
-            contact.Hom = "";
-            contact.Place = "";
+        //[Test]
+        //public void EmptyContactCreationTest()
+        //{
+        //    ContactData contact = new ContactData();
+        //    contact.Fname = "";
+        //    contact.Lname = "";
+        //    contact.Nick = "";
+        //    contact.Comp = "";
+        //    contact.HomePhone = "";
+        //    contact.Place = "";
 
-            List<ContactData> oldContacts = app.Contacts.GetContactsList();
+        //    List<ContactData> oldContacts = app.Contacts.GetContactsList();
 
-            app.Contacts.Create(contact);
+        //    app.Contacts.Create(contact);
 
-            Assert.AreEqual(oldContacts.Count + 1, app.Contacts.GetContactsCount());
+        //    Assert.AreEqual(oldContacts.Count + 1, app.Contacts.GetContactsCount());
 
-            List<ContactData> newcontact = app.Contacts.GetContactsList();
-            oldContacts.Add(contact);
-            oldContacts.Sort();
-            oldContacts.Sort();
-            Assert.AreEqual(oldContacts, newcontact);
+        //    List<ContactData> newcontact = app.Contacts.GetContactsList();
+        //    oldContacts.Add(contact);
+        //    oldContacts.Sort();
+        //    oldContacts.Sort();
+        //    Assert.AreEqual(oldContacts, newcontact);
 
-        }
+        //}
     }
 }
